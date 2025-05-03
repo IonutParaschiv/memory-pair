@@ -1,21 +1,25 @@
 
 import styled from 'styled-components'
-import { QuestionMarkIcon } from '../assets/icons'
+import { icons, QuestionMarkIcon } from '../assets/icons'
+import { FC } from 'react'
+import { CardType } from '../types/game'
+
+const FLIP_TRANSIOTION_DURATION = 0.6
 
 const CardContainer = styled.div`
   perspective: 1000px;
-  width: 12em;
-  height: 8em;
+  width: 11em;
+  height: 6.8em;
 `
 
-const CardInner = styled.div<{ flipped: boolean }>`
+const CardInner = styled.div<{ $flipped: boolean }>`
   position: relative;
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.6s;
+  transition: transform ${FLIP_TRANSIOTION_DURATION}s;
   transform-style: preserve-3d;
-  transform: ${({ flipped }) => (flipped ? 'rotateY(180deg)' : 'none')};
+  transform: ${({ $flipped }) => ($flipped ? 'rotateY(180deg)' : 'none')};
   cursor: pointer;
 `
 
@@ -36,30 +40,34 @@ const CardFront = styled(CardFace)`
   background-color: #ffffff;
 `
 
-const CardBack = styled(CardFace)`
-  background-color: #0077ff;
+const CardBack = styled(CardFace)<{ $matched?: boolean }>`
+  background-color:${({ $matched }) => ($matched ? '#27ae60' : '#3498db')}; );
+  transition: background-color .9s ease;
+  transition-delay: ${FLIP_TRANSIOTION_DURATION}s;
   color: white;
   transform: rotateY(180deg);
 `
 type CardProps = {
   id: number,
-  type: string,
+  type: CardType,
   onClick: (id: number) => void,
   flipped: boolean,
+  matched: boolean
 }
 
 export const Card = (props: CardProps) => {
+  const { id, type, onClick, flipped, matched } = props
+  const Icon:FC = icons[type] || QuestionMarkIcon
 
-  const { id, type, onClick, flipped } = props
   return (
     <CardContainer onClick={() => onClick(id)}>
-      <CardInner flipped={flipped}>
+      <CardInner $flipped={flipped}>
         <CardFront>
-          <QuestionMarkIcon />
+          <QuestionMarkIcon/>
         </CardFront>
-        <CardBack>
+        <CardBack $matched={matched}>
           <div>
-            <h2>{type}</h2>
+            <Icon/>
           </div>
         </CardBack>
       </CardInner>

@@ -1,33 +1,30 @@
-import { useEffect } from "react";
+
+import { GridContainer } from "../layouts/GridContainer";
 import { useGameData } from "../providers/GameProvider";
+import { Button } from "./Button";
 import { Card } from "./Card"
 
 export const CardContainer =  () => {
-  const { gameData, flipCard } = useGameData();
-  const cardClickHandler = (id: number) => {
-    flipCard(id);
-  }
-
-  // TODO: remove this console log
-  // It's only for debugging purposes
-  useEffect(() => {
-    console.log('CardContainer is getting rendered');
-  }, [])
+  const { gameData, flipCard, resetData } = useGameData();
 
   return (
       !gameData ? 
       (<div>Loading...</div>) : 
       (
         <>
-          {gameData.map(({ id, type, isFlipped }) => (
+        <Button text="Start a new game" onClick={resetData}/>
+        <GridContainer>
+          {gameData.map(({ id, type, isFlipped, isMatched }) => (
             <Card 
               key={id} 
               id={id} 
               type={type} 
               flipped={isFlipped} 
-              onClick={cardClickHandler}
+              matched={isMatched}
+              onClick={(id) => flipCard(id)}
             />
           ))}
+        </GridContainer>
         </>
       )
   )

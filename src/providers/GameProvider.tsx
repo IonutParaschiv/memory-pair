@@ -1,26 +1,27 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { useContext } from "react";
-import { useCardData } from "./DataProvider";
-import { GameCard } from "../types/game";
+import { useApi } from "./DataProvider";
+import { GameCardCollection } from "../types/game";
 import { mapGameData } from "../services/GameService";
 
 type GameContextType = {
   canFlip: boolean;
   flippedCards: number;
-  gameData: GameCard[] | null;
+  gameData: GameCardCollection | null;
   flipCard: (id: number) => void;
+  resetData: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 const RESET_TIMEOUT = 1000;
+
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [canFlip, setCanFlip] = useState(true);
   const [flippedCards, setFlippedCards] = useState<number>(0);
-  const [gameData, setGameData] = useState<GameCard[] | null>(null);
-  // const [activeCards, setActiveCards] = useState<GameCard[]>([]);
+  const [gameData, setGameData] = useState<GameCardCollection | null>(null);
 
-  const activeCards = useRef<GameCard[]>([]);
-  const { data } = useCardData();
+  const activeCards = useRef<GameCardCollection>([]);
+  const { data } = useApi();
 
   useEffect(() => {
     if(data.length){
@@ -29,21 +30,22 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if(flippedCards > 1) {
-      setCanFlip(false);
-      setTimeout(() => {
-        resetFlippedCards();
-      }, RESET_TIMEOUT);
-    }
-    return () => {
-      setCanFlip(true);
-    }
-  }, [flippedCards]);
-
-  const resetFlippedCards = () => {
+  const resetState = () => {
     setFlippedCards(0);
     setCanFlip(true);
+    activeCards.current = [];
+  }
+
+  const resetData = () => {
+    resetState();
+    setGameData(null);
+
+    const newCards = mapGameData(data);
+    setGameData(newCards);
+  }
+
+  const resetFlippedCards = () => {
+    resetState();
     setGameData((prevGameData) =>
       prevGameData?.map((card) => 
         !card.isMatched ? ({ ...card, isFlipped: false }) : card) || null
@@ -80,7 +82,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
           activeCards.current = [];
           setCanFlip(true);
         }, 500);
-      }else {
+      } else {
         setTimeout(() => {
           resetFlippedCards();
           activeCards.current = [];
@@ -92,7 +94,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <GameContext.Provider value={{ canFlip, flippedCards, gameData, flipCard }}>
+    <GameContext.Provider value={{ canFlip, flippedCards, gameData, flipCard, resetData }}>
       {children}
     </GameContext.Provider>
   );

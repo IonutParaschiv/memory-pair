@@ -1,5 +1,5 @@
-import { CardCollectionResponse } from "../types/card";
-import { mockCardData } from "./mockData/cardData";
+import { CardCollectionResponse } from "../types/data";
+import { mockCardData } from "../../data/mockData/cardData";
 
 
 // Simulate a network request to fetch card data

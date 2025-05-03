@@ -1,10 +1,9 @@
-export type CardType = string
-export type Card = {
-  id: number;
-  type: CardType;
-}
 
-export type CardCollection = Card[]
+export type ApiCard = {
+  id: number;
+  type: string;
+}
+export type CardCollection = ApiCard[]
 
 export type CardCollectionResponse = {
   status: number;
