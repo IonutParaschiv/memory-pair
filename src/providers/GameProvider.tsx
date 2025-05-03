@@ -7,6 +7,7 @@ type GameContextType = {
   canFlip: boolean;
   flippedCards: number;
   gameData: GameCardCollection | null;
+  shuffling: boolean;
   flipCard: (id: number) => void;
   resetData: () => void;
 }
@@ -18,6 +19,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [canFlip, setCanFlip] = useState(true);
   const [flippedCards, setFlippedCards] = useState<number>(0);
   const [gameData, setGameData] = useState<GameCardCollection | null>(null);
+  const [shuffling, setShuffling] = useState(false);
 
   const activeCards = useRef<GameCardCollection>([]);
   const { data } = useApi();
@@ -37,10 +39,14 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
 
   const resetData = () => {
     resetState();
-    setGameData(null);
-
-    const newCards = mapGameData(data);
-    setGameData(newCards);
+    setShuffling(true);
+    const shufflingTimeout = setTimeout(() => {
+      setGameData(null);
+      setShuffling(false);
+      clearTimeout(shufflingTimeout);
+      const newCards = mapGameData(data);
+      setGameData(newCards);
+    }, 2000);
   }
 
   const resetFlippedCards = () => {
@@ -93,7 +99,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <GameContext.Provider value={{ canFlip, flippedCards, gameData, flipCard, resetData }}>
+    <GameContext.Provider value={{ canFlip, flippedCards, gameData, shuffling, flipCard, resetData }}>
       {children}
     </GameContext.Provider>
   );

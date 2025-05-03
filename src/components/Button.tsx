@@ -1,26 +1,42 @@
+import { styled } from "styled-components";
+
+const StyledButton = styled.button`
+  width: 40%;
+  padding: 0.75em 1.25em;
+  font-size: 1rem;
+  font-weight: 900;
+  color: white;
+  background-color: #4caf50; /* soft green */
+  border: none;
+  border-radius: 0.5em;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin: 1.5em 0;
+  &:hover {
+    background-color: #45a047;
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+  &:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+  }
+`
 
 type ButtonProps = {
-  text: string;
+  children: React.ReactNode
   onClick: () => void;
   disabled?: boolean;
 }
-export const Button = ({ text, onClick, disabled = false } : ButtonProps) => {
+export const Button = ({ children, onClick, disabled = false } : ButtonProps) => {
   return (
-    <button
+    <StyledButton
       onClick={onClick}
       disabled={disabled}
-      style={{
-        backgroundColor: disabled ? '#ccc' : '#0077ff',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '0.5em',
-        padding: '0.5em 1em',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        fontSize: '1em',
-        boxShadow: '0 0.125em 0.375em rgba(0, 0, 0, 0.1)',
-        transition: 'background-color 0.3s',
-      }}>
-        {text}
-      </button>
+    >
+      {children}
+    </StyledButton>
   )
 }

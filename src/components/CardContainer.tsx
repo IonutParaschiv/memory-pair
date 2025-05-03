@@ -1,19 +1,22 @@
 
 import { useGameData } from "../hooks/useGameData";
-import { GridContainer } from "../layouts/GridContainer";
+import { GameGridContainer } from "../layouts/GameGridContainer";
+import { RowContainer } from "../layouts/RowContainer";
 import { Button } from "./Button";
 import { Card } from "./Card"
+import { Title } from "./Title";
 
 export const CardContainer =  () => {
-  const { gameData, flipCard, resetData } = useGameData();
+  const { gameData, flipCard, resetData, shuffling } = useGameData();
+  if (!gameData) return <div>Loading...</div>
 
   return (
-      !gameData ? 
-      (<div>Loading...</div>) : 
-      (
-        <>
-        <Button text="Start a new game" onClick={resetData}/>
-        <GridContainer>
+    <>
+      <RowContainer>
+        <Title>ZooFlip</Title>
+      </RowContainer>
+      <RowContainer>
+        <GameGridContainer>
           {gameData.map(({ id, type, isFlipped, isMatched }) => (
             <Card 
               key={id} 
@@ -21,11 +24,15 @@ export const CardContainer =  () => {
               type={type} 
               flipped={isFlipped} 
               matched={isMatched}
+              shuffling={shuffling}
               onClick={(id) => flipCard(id)}
             />
           ))}
-        </GridContainer>
-        </>
-      )
+        </GameGridContainer>
+      </RowContainer>
+      <RowContainer>
+        <Button onClick={resetData}>Start a new game</Button>
+      </RowContainer>
+    </>
   )
 }

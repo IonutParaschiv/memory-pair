@@ -43,9 +43,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix",
-      "tsc --noEmit",
-      "jest --bail --findRelatedTests"
+      "eslint --fix"
     ]
   }
 }

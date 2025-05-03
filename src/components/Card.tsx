@@ -1,18 +1,23 @@
 
-import styled from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { icons, QuestionMarkIcon } from '../assets/icons'
 import { FC } from 'react'
 import { CardType } from '../types/game'
 
 const FLIP_TRANSIOTION_DURATION = 0.6
 
-const CardContainer = styled.div`
-  perspective: 1000px;
-  width: 11em;
-  height: 6.8em;
+const spin = keyframes`
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
 `
 
-const CardInner = styled.div<{ $flipped: boolean }>`
+const CardContainer = styled.div`
+  perspective: 1000px;
+  width: 10em;
+  height: 6.5em;
+`
+
+const CardInner = styled.div<{ $flipped: boolean, $shuffling: boolean }>`
   position: relative;
   width: 100%;
   height: 100%;
@@ -21,6 +26,11 @@ const CardInner = styled.div<{ $flipped: boolean }>`
   transform-style: preserve-3d;
   transform: ${({ $flipped }) => ($flipped ? 'rotateY(180deg)' : 'none')};
   cursor: pointer;
+  ${({ $shuffling }) =>
+    $shuffling &&
+    css`
+      animation: ${spin} .5s linear infinite;
+    `}
 `
 
 const CardFace = styled.div`
@@ -50,25 +60,23 @@ const CardBack = styled(CardFace)<{ $matched?: boolean }>`
 type CardProps = {
   id: number,
   type: CardType,
-  onClick: (id: number) => void,
   flipped: boolean,
-  matched: boolean
+  matched: boolean,
+  shuffling: boolean
+  onClick: (id: number) => void,
 }
 
 export const Card = (props: CardProps) => {
-  const { id, type, onClick, flipped, matched } = props
+  const { id, type, onClick, flipped, matched, shuffling } = props
   const Icon:FC = icons[type] || QuestionMarkIcon
-
   return (
     <CardContainer onClick={() => onClick(id)}>
-      <CardInner $flipped={flipped}>
+      <CardInner $flipped={flipped} $shuffling={shuffling}>
         <CardFront>
           <QuestionMarkIcon/>
         </CardFront>
         <CardBack $matched={matched}>
-          <div>
-            <Icon/>
-          </div>
+          <Icon/>
         </CardBack>
       </CardInner>
     </CardContainer>
