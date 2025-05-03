@@ -1,6 +1,6 @@
 
+import { useGameData } from "../hooks/useGameData";
 import { GridContainer } from "../layouts/GridContainer";
-import { useGameData } from "../providers/GameProvider";
 import { Button } from "./Button";
 import { Card } from "./Card"
 

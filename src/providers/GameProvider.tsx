@@ -1,8 +1,7 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { useContext } from "react";
-import { useApi } from "./DataProvider";
 import { GameCardCollection } from "../types/game";
 import { mapGameData } from "../services/GameService";
+import { useApi } from "../hooks/useApi";
 
 type GameContextType = {
   canFlip: boolean;
@@ -12,9 +11,9 @@ type GameContextType = {
   resetData: () => void;
 }
 
-const GameContext = createContext<GameContextType | undefined>(undefined);
 const RESET_TIMEOUT = 1000;
 
+export const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [canFlip, setCanFlip] = useState(true);
   const [flippedCards, setFlippedCards] = useState<number>(0);
@@ -99,11 +98,3 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     </GameContext.Provider>
   );
 };
-
-export const useGameData = () => {
-  const context = useContext(GameContext);
-  if (!context) {
-    throw new Error("useGame must be used within a GameProvider");
-  }
-  return context;
-}
