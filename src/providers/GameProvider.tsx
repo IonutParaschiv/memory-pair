@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from 'react';
-import { GameCardCollection } from '../types/game';
+import { GameCard, GameCardCollection } from '../types/game';
 import { mapGameData } from '../services/GameService';
 import { useApi } from '../hooks/useApi';
 
@@ -12,7 +12,7 @@ type GameContextType = {
   resetData: () => void;
 };
 
-const RESET_TIMEOUT = 1000;
+const SHUFFLE_TIMEOUT = 1000;
 
 export const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -21,7 +21,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [gameData, setGameData] = useState<GameCardCollection | null>(null);
   const [shuffling, setShuffling] = useState(false);
 
-  const activeCards = useRef<GameCardCollection>([]);
+  const activeCards = useRef<GameCard[]>([]);
   const { data } = useApi();
 
   useEffect(() => {
@@ -40,13 +40,12 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const resetData = () => {
     resetState();
     setShuffling(true);
-    const shufflingTimeout = setTimeout(() => {
+    setTimeout(() => {
       setGameData(null);
       setShuffling(false);
-      clearTimeout(shufflingTimeout);
       const newCards = mapGameData(data);
       setGameData(newCards);
-    }, 2000);
+    }, SHUFFLE_TIMEOUT);
   };
 
   const resetFlippedCards = () => {
@@ -78,7 +77,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
         setTimeout(() => {
           resetFlippedCards();
           activeCards.current = [];
-        }, RESET_TIMEOUT);
+        }, SHUFFLE_TIMEOUT);
       }
     }
     setFlippedCards(prevCount => prevCount + 1);

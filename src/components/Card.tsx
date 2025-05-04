@@ -11,7 +11,6 @@ const spin = keyframes`
 `;
 
 const CardContainer = styled.div`
-  perspective: 1000px;
   width: 10em;
   height: 6.5em;
 `;
@@ -56,6 +55,7 @@ const CardBack = styled(CardFace)<{ $matched?: boolean }>`
   color: white;
   transform: rotateY(180deg);
 `;
+
 type CardProps = {
   id: number;
   type: CardType;
@@ -66,7 +66,7 @@ type CardProps = {
 };
 
 export const Card = (props: CardProps) => {
-  const { id, type, onClick, flipped, matched, shuffling } = props;
+  const { id, type, flipped, matched, shuffling, onClick } = props;
   const Icon: FC = icons[type] || QuestionMarkIcon;
   return (
     <CardContainer onClick={() => onClick(id)}>

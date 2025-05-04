@@ -5,7 +5,7 @@ import { Button } from './Button';
 import { Card } from './Card';
 import { Title } from './Title';
 
-export const CardContainer = () => {
+export const MainContainer = () => {
   const { gameData, flipCard, resetData, shuffling } = useGameData();
   if (!gameData) return <div>Loading...</div>;
 
@@ -17,7 +17,7 @@ export const CardContainer = () => {
       <RowContainer>
         <GameGridContainer>
           {gameData.map(({ id, type, isFlipped, isMatched }) => (
-            <Card key={id} id={id} type={type} flipped={isFlipped} matched={isMatched} shuffling={shuffling} onClick={id => flipCard(id)} />
+            <Card key={id} id={id} type={type} flipped={isFlipped} matched={isMatched} shuffling={shuffling} onClick={flipCard} />
           ))}
         </GameGridContainer>
       </RowContainer>
