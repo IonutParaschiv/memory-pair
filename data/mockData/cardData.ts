@@ -1,4 +1,4 @@
-import { CardCollection } from "../../src/types/data";
+import { CardCollection } from '../../src/types/data';
 
 export const mockCardData: CardCollection = [
   { id: 1, type: 'rabbit' },
@@ -16,4 +16,4 @@ export const mockCardData: CardCollection = [
   { id: 13, type: 'boar' },
   { id: 14, type: 'bird' },
   { id: 15, type: 'grasshopper' },
-]
+];

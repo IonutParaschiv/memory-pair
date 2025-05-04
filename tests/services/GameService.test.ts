@@ -17,12 +17,10 @@ describe('GameService', () => {
     });
 
     it('should throw an error for invalid card type', () => {
-      const cardData: CardCollection = [
-        { id: 1, type: 'invalidType' },
-      ];
+      const cardData: CardCollection = [{ id: 1, type: 'invalidType' }];
       expect(() => mapGameData(cardData)).toThrowError('Invalid card type: invalidType');
     });
-  })
+  });
 
   describe('shuffleGameData', () => {
     it('outputs the same shuffled array for the same inputs (is deterministic)', () => {
@@ -38,7 +36,7 @@ describe('GameService', () => {
       const secondShuffle = shuffleGameData(cardData, SEED);
 
       expect(firstShuffle).toEqual(secondShuffle);
-    })
+    });
     it('outputs different shuffled arrays for different inputs', () => {
       const cardData: GameCardCollection = [
         { id: 0, type: CardType.Bird, isFlipped: false, isMatched: false },
@@ -51,8 +49,8 @@ describe('GameService', () => {
       const secondShuffle = shuffleGameData(cardData, 456);
 
       expect(firstShuffle).not.toEqual(secondShuffle);
-    })
-  })
+    });
+  });
 
   describe('isCardType', () => {
     it('should return true for valid card types', () => {
@@ -77,4 +75,4 @@ describe('GameService', () => {
       expect(() => parseCard(rawCard)).toThrowError('Invalid card type: invalidType');
     });
   });
-})
+});

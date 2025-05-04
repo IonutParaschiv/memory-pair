@@ -42,6 +42,7 @@ npm install
 # 3. Run locally
 npm run dev
 ```
+
 ### 🧪 Tests
 
 - Run with **Jest** and **React Testing Library**

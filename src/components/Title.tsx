@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Title = styled.h1`
   font-size: 4.5em;
@@ -10,4 +10,4 @@ export const Title = styled.h1`
   @media (max-width: 600px) {
     font-size: 2.5rem;
   }
-`
+`;

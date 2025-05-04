@@ -19,11 +19,11 @@ export enum CardType {
 export type Card = {
   id: number;
   type: CardType;
-}
+};
 
 export type GameCard = Card & {
   isFlipped: boolean;
   isMatched: boolean;
-}
+};
 
 export type GameCardCollection = GameCard[];

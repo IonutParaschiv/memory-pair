@@ -1,4 +1,4 @@
-import {fetchCardData} from '../../src/services/DataService';
+import { fetchCardData } from '../../src/services/DataService';
 
 describe('DataService', () => {
   it('should fetch card data', async () => {
@@ -13,4 +13,4 @@ describe('DataService', () => {
     const result = fetchCardData();
     expect(result).toBeInstanceOf(Promise);
   });
-})
+});
